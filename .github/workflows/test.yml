@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [ main ]
 
+env:
+  PUBLIC_SITE_URL: https://eric.github.io
+  PUBLIC_BASE_PATH: /vancouver-tool-library
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -27,4 +31,8 @@ jobs:
       run: npm ci
     
     - name: Run tests
-      run: npm test 
+      run: npm test
+      
+    - name: Set test status
+      if: github.event_name == 'push'
+      run: echo "tests_passed=true" >> $GITHUB_OUTPUT 

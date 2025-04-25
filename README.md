@@ -1,6 +1,6 @@
 # Vancouver Tool Library
 
-🌐 [View the live site on GitHub Pages](https://eric.github.io/vancouver-tool-library/)
+👀 [View the live site on GitHub Pages](https://ericnelson12.github.io/vancouver-tool-library/)
 
 To run the site locally:
 

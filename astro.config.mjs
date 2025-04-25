@@ -4,7 +4,8 @@ import sitemap from '@astrojs/sitemap';
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
-  site: import.meta.env.SITE_URL,
+  site: process.env.PUBLIC_SITE_URL,
+  base: process.env.PUBLIC_BASE_PATH || '',
   vite: {
     plugins: [tailwindcss()]
   },

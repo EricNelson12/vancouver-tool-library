@@ -5,12 +5,12 @@
 name: Deploy Astro site to Pages
 
 on:
-  # Runs on pushes targeting the default branch
-  push:
-    branches: ["main"]
-
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+  workflow_run:
+    workflows: ["Test"]
+    types:
+      - completed
+    branches:
+      - main
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
@@ -26,13 +26,15 @@ concurrency:
 
 env:
   BUILD_PATH: "." # default value when not using subfolders
+  PUBLIC_SITE_URL: ${{ secrets.PUBLIC_SITE_URL }}
+  PUBLIC_BASE_PATH: ${{ secrets.PUBLIC_BASE_PATH }}
   # Add contentful environment variables from github respository secrets
   CONTENTFUL_SPACE_ID: ${{ secrets.CONTENTFUL_SPACE_ID }}
   CONTENTFUL_DELIVERY_TOKEN: ${{ secrets.CONTENTFUL_DELIVERY_TOKEN }}
 
-
 jobs:
   build:
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main' }}
     name: Build
     runs-on: ubuntu-latest
     steps:
@@ -72,8 +74,8 @@ jobs:
       - name: Build with Astro
         run: |
           ${{ steps.detect-package-manager.outputs.runner }} astro build \
-            --site "${{ steps.pages.outputs.origin }}" \
-            --base "${{ steps.pages.outputs.base_path }}"
+            --site "${{ env.PUBLIC_SITE_URL }}" \
+            --base "${{ env.PUBLIC_BASE_PATH }}"
         working-directory: ${{ env.BUILD_PATH }}
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

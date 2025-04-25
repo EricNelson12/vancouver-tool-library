@@ -2,8 +2,8 @@
 import HeaderLink from './HeaderLink.astro';
 import OpeningStatusBanner from './OpeningStatusBanner.astro';
 
-const siteUrl = import.meta.env.SITE_URL || 'http://localhost:4321';
-const logoUrl = new URL('/vtl_logo.png', siteUrl).toString();
+const basePath = import.meta.env.PUBLIC_BASE_PATH || '';
+const logoUrl = `${basePath}/vtl_logo.png`;
 ---
 
 <header class="bg-white border-gray-200 dark:bg-gray-900">

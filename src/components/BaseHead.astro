@@ -12,27 +12,30 @@ interface Props {
 
 const { title, description, image = '/news-placeholder-1.jpg' } = Astro.props;
 
-// Safely construct the canonical URL
-const siteUrl = import.meta.env.SITE_URL || 'http://localhost:4321';
+// Construct URLs using public environment variables
+const siteUrl = import.meta.env.PUBLIC_SITE_URL || 'http://localhost:4321';
+const basePath = import.meta.env.PUBLIC_BASE_PATH || '';
 const canonicalURL = new URL(Astro.url.pathname, siteUrl);
+const imageUrl = new URL(`${basePath}${image}`, siteUrl);
+const rssUrl = new URL(`${basePath}/rss.xml`, siteUrl);
 ---
 
 <!-- Global Metadata -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-<link rel="sitemap" href="/sitemap-index.xml" />
+<link rel="icon" type="image/svg+xml" href={`${basePath}/favicon.svg`} />
+<link rel="sitemap" href={`${basePath}/sitemap-index.xml`} />
 <link
 	rel="alternate"
 	type="application/rss+xml"
 	title={SITE_TITLE}
-	href={new URL('rss.xml', siteUrl)}
+	href={rssUrl}
 />
 <meta name="generator" content={Astro.generator} />
 
 <!-- Font preloads -->
-<link rel="preload" href="/fonts/atkinson-regular.woff" as="font" type="font/woff" crossorigin />
-<link rel="preload" href="/fonts/atkinson-bold.woff" as="font" type="font/woff" crossorigin />
+<link rel="preload" href={`${basePath}/fonts/atkinson-regular.woff`} as="font" type="font/woff" crossorigin />
+<link rel="preload" href={`${basePath}/fonts/atkinson-bold.woff`} as="font" type="font/woff" crossorigin />
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
@@ -47,11 +50,11 @@ const canonicalURL = new URL(Astro.url.pathname, siteUrl);
 <meta property="og:url" content={canonicalURL} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-<meta property="og:image" content={new URL(image, siteUrl)} />
+<meta property="og:image" content={imageUrl} />
 
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:url" content={canonicalURL} />
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
-<meta property="twitter:image" content={new URL(image, siteUrl)} />
+<meta property="twitter:image" content={imageUrl} />
