@@ -11,7 +11,7 @@ const subpath = pathname.match(/[^\/]+/g);
 const isActive = href === pathname || href === '/' + (subpath?.[0] || '');
 
 // If the href is a relative path (starts with /), prepend the site URL
-const finalHref = href.startsWith('/') ? import.meta.env.SITE_URL + href : href;
+const finalHref = href.startsWith('/') ? new URL(href, import.meta.env.SITE_URL).href : href;
 ---
 
 <a class="text-3xl font-bold underline" href={finalHref} class:list={[className, { active: isActive }]} {...props}>

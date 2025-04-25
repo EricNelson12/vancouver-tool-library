@@ -1,0 +1,22 @@
+---
+import Layout from "../components/Layout.astro";
+---
+
+<Layout title="Tools | Vancouver Tool Library" description="Browse our tool inventory">
+	<main class="container mx-auto px-4 py-8">
+		<h1 class="text-3xl font-bold mb-6">Tool Inventory</h1>
+		<div id="myturn-embed-frame">
+			<iframe 
+				src="https://vancouver.myturn.com/library/inventory/browse?embed=true" 
+				width="100%" 
+				scrolling="no" 
+				height="1500" 
+				style="border:0;"
+			></iframe>
+		</div>
+		<script 
+			id="myturn-embed-script" 
+			src="https://vancouver.myturn.com/library/assets/ui/myturn-embed/myturn-embed.js"
+		></script>
+	</main>
+</Layout> 
