@@ -9,15 +9,17 @@ const { href, class: className, ...props } = Astro.props;
 const pathname = Astro.url.pathname;
 const subpath = pathname.match(/[^\/]+/g);
 
-// Handle base path for internal links
-const basePath = import.meta.env.PUBLIC_BASE_PATH || '';
-const finalHref = href.startsWith('/') ? `${basePath}${href}` : href;
-
-// Check if the current path matches the link
-const isActive = pathname === (href.startsWith('/') ? `${basePath}${href}` : href) || 
-                 href === '/' + (subpath?.[0] || '');
+// Check if the href is in the current path
+const isActive = href === pathname || href === '/' + (subpath?.[0] || '');
 ---
 
-<a href={finalHref} class:list={[className, { active: isActive }]} {...props}>
+<a href={href} class:list={[className, { active: isActive }]} {...props}>
 	<slot />
 </a>
+
+<style>
+	/* Change the opacity of the link when it is active */
+	.active {
+		opacity: 0.5;
+	}
+</style>
