@@ -1,0 +1,24 @@
+---
+import Layout from '../components/Layout.astro';
+import type { TypeBlogPost } from '../lib/contentful/generated-types';
+import type { ChainModifiers, LocaleCode } from 'contentful';
+
+interface Props {
+	blogPost: TypeBlogPost<ChainModifiers, LocaleCode>;
+};
+
+const { blogPost: newsPost } = Astro.props;
+const { title, content } = newsPost.fields;
+const titleString = title?.toString() ?? 'News Post';
+---
+
+<Layout title={titleString} description={titleString}>
+	<article class="max-w-4xl mx-auto px-4 py-8">
+		<div class="prose prose-lg max-w-none">
+			<h1 class="text-4xl font-bold mb-6">{titleString}</h1>
+			<div class="prose prose-lg">
+				<slot />
+			</div>
+		</div>
+	</article>
+</Layout>

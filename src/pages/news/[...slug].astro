@@ -1,0 +1,27 @@
+---
+import { type CollectionEntry, getCollection } from 'astro:content';
+import { render } from 'astro:content';
+import { contentfulClient } from "../../lib/contentful/contentful";
+import NewsPostLayout from "../../layouts/NewsPostLayout.astro";
+import type { TypeBlogPost, TypeBlogPostSkeleton } from "../../lib/contentful/generated-types";
+import type { ChainModifiers, LocaleCode } from "contentful";
+import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
+
+export async function getStaticPaths() {
+	const entries = await contentfulClient.getEntries<TypeBlogPostSkeleton>({
+		content_type: "blogPost",
+	});
+	
+	return entries.items.map((item) => ({
+		params: { slug: item.fields.title },
+		props: { blogPost: item }
+	}));
+}
+
+const { blogPost } = Astro.props;
+const contentHtml = blogPost.fields.content ? documentToHtmlString(blogPost.fields.content) : '';
+---
+
+<NewsPostLayout blogPost={blogPost}>
+	<div set:html={contentHtml} />
+</NewsPostLayout>

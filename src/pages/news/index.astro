@@ -1,0 +1,26 @@
+---
+import { contentfulClient } from "../../lib/contentful/contentful";
+import type { TypeBlogPostSkeleton } from "../../lib/contentful/generated-types";
+import Layout from "../../components/Layout.astro";
+
+const entries = await contentfulClient.getEntries<TypeBlogPostSkeleton>({
+	content_type: "blogPost",
+});
+---
+
+<Layout title="News" description="News from the Vancouver Tool Library">
+	<div class="max-w-4xl mx-auto px-4 py-8">
+		<h1 class="text-3xl font-bold mb-8">News</h1>
+		<ul class="space-y-6">
+			{
+				entries.items.map((post) => (
+					<li class="border-b border-gray-200 pb-6">
+						<a href={`/news/${post.fields.title}`} class="block hover:text-blue-600">
+							<h2 class="text-2xl font-semibold mb-2">{post.fields.title}</h2>
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</Layout>
